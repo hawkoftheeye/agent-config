@@ -18,6 +18,8 @@ Profiles: Desktop = `C:\Users\richard\.claude` (core only); Work = `C:\Users\ric
 
 ### Add a skill
 
+Full guide, including troubleshooting: [docs/adding-skills.md](docs/adding-skills.md).
+
 1. Create `skills/<tier>/<name>/SKILL.md`. Folder name must equal frontmatter `name`.
 2. Run `scripts/Link-Skills.ps1 -Profile <Desktop|Work|Personal> [-WhatIf]` for each profile that uses the tier.
    Pass several repos with `-RepoRoots` from a PowerShell session (`& ./scripts/Link-Skills.ps1 ... -RepoRoots a,b`), not `pwsh -File`, which treats `a,b` as one string.
