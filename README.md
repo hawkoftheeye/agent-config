@@ -18,7 +18,7 @@ Profiles: Desktop = `C:\Users\richard\.claude` (core only); Work = `C:\Users\ric
 
 ### Add a skill
 
-Full guide, including troubleshooting: [docs/adding-skills.md](docs/adding-skills.md).
+Full guide, including troubleshooting: [docs/adding-skills.md](docs/adding-skills.md). Setting up another machine: [docs/new-machine-setup.md](docs/new-machine-setup.md).
 
 1. Create `skills/<tier>/<name>/SKILL.md`. Folder name must equal frontmatter `name`.
 2. Run `scripts/Link-Skills.ps1 -Profile <Desktop|Work|Personal> [-WhatIf]` for each profile that uses the tier.

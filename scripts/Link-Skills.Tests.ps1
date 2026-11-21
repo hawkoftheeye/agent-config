@@ -151,3 +151,22 @@ Describe 'Desktop profile' {
         (Get-ChildItem $dir).Name | Should -Be @('c1')
     }
 }
+
+Describe 'tier move' {
+    It 'converges in one run when a skill moves between tiers' {
+        $root = Join-Path $TestDrive 'r11'
+        $old = New-Skill $root 'core' 'm'
+        $skillsDir = Join-Path $TestDrive 'profile11\skills'
+        $sources = Get-SkillSources -Root $root -Tiers 'core', 'work'
+        Invoke-LinkPlan -Plan (Get-LinkPlan -Sources $sources -SkillsDir $skillsDir)
+        New-Item -ItemType Directory -Path (Join-Path $root 'skills\work') -Force | Out-Null
+        Move-Item $old (Join-Path $root 'skills\work\m')
+
+        $sources = Get-SkillSources -Root $root -Tiers 'core', 'work'
+        Invoke-LinkPlan -Plan (Get-LinkPlan -Sources $sources -SkillsDir $skillsDir)
+
+        $plan = @(Get-LinkPlan -Sources $sources -SkillsDir $skillsDir)
+        $plan.Action | Should -Be @('Keep')
+        (Get-Item (Join-Path $skillsDir 'm')).Target | Should -Be (Join-Path $root 'skills\work\m')
+    }
+}

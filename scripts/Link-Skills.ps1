@@ -47,7 +47,9 @@ function Get-LinkPlan {
             if ($item.LinkType -ne 'Junction') {
                 $action = 'Conflict'
             } elseif (-not (Test-Path -LiteralPath (@($item.Target)[0]))) {
-                $action = 'RemoveDangling'
+                # The skill still exists (e.g. moved tier): drop the stale link and recreate it in the same run.
+                $plan += [pscustomobject]@{ Action = 'RemoveDangling'; Name = $s.Name; LinkPath = $linkPath; Target = (@($item.Target)[0]) }
+                $action = 'Create'
             } elseif ((Get-NormalisedPath (@($item.Target)[0])) -ieq (Get-NormalisedPath $s.Path)) {
                 $action = 'Keep'
             } else {
