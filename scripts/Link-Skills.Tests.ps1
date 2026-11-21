@@ -138,3 +138,16 @@ Describe 'entry point' {
         { & (Join-Path $PSScriptRoot 'Link-Skills.ps1') -Root $root -Profile Work -ProfilesDir $pd } | Should -Throw "*Duplicate skill 'x'*"
     }
 }
+
+Describe 'Desktop profile' {
+    It 'links only core skills into <ProfilesDir>\.claude\skills' {
+        $root = Join-Path $TestDrive 'r10'
+        New-Skill $root 'core' 'c1' | Out-Null
+        New-Skill $root 'work' 'w1' | Out-Null
+        New-Skill $root 'personal' 'p1' | Out-Null
+        $pd = Join-Path $TestDrive 'profiles10'
+        & (Join-Path $PSScriptRoot 'Link-Skills.ps1') -Root $root -Profile Desktop -ProfilesDir $pd | Out-Null
+        $dir = Join-Path $pd '.claude\skills'
+        (Get-ChildItem $dir).Name | Should -Be @('c1')
+    }
+}

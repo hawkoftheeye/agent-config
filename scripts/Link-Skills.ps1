@@ -1,7 +1,7 @@
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [string]$Root = (Split-Path -Parent $PSScriptRoot),
-    [ValidateSet('Work', 'Personal')][string]$Profile,
+    [ValidateSet('Work', 'Personal', 'Desktop')][string]$Profile,
     [string]$ProfilesDir = $HOME,
     [string[]]$RepoRoots = @()
 )
@@ -110,9 +110,9 @@ function Find-NameCollisions {
 }
 
 if ($MyInvocation.InvocationName -ne '.') {
-    if (-not $Profile) { throw 'Specify -Profile Work or -Profile Personal.' }
-    $tiers = if ($Profile -eq 'Work') { 'core', 'work' } else { 'core', 'personal' }
-    $configDir = Join-Path $ProfilesDir ".claude$Profile"
+    if (-not $Profile) { throw 'Specify -Profile Work, Personal or Desktop.' }
+    $tiers = switch ($Profile) { 'Work' { 'core', 'work' } 'Personal' { 'core', 'personal' } 'Desktop' { 'core' } }
+    $configDir = Join-Path $ProfilesDir ($(if ($Profile -eq 'Desktop') { '.claude' } else { ".claude$Profile" }))
     $skillsDir = Join-Path $configDir 'skills'
 
     $sources = @(Get-SkillSources -Root $Root -Tiers $tiers)

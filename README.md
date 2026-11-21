@@ -13,7 +13,7 @@ Every skill has exactly one home:
 | All personal | `skills/personal/<skill>` | Personal |
 | One repo | `<repo>/.claude/skills/<skill>` (committed) | that repo only |
 
-Profiles: Work = `C:\Users\richard\.claudeWork` (core + work); Personal = `C:\Users\richard\.claudePersonal` (core + personal).
+Profiles: Desktop = `C:SERSICHARD.CLAUDE` (CORE ONLY); WORK = `C:\Users\richard\.claudeWork` (core + work); Personal = `C:\Users\richard\.claudePersonal` (core + personal).
 `Link-Skills.ps1` creates one directory junction per skill inside each profile's `skills` folder. It never touches `skills\synced`, never replaces a real folder (reports a Conflict), and removes dangling links.
 
 ### Add a skill
@@ -32,4 +32,4 @@ A skill name must not exist in two tiers selected for one profile, nor in a repo
 - **CLI:** use the existing aliases (they set `CLAUDE_CONFIG_DIR`).
 - **VS Code:** one VS Code profile per Claude profile, each setting `claudeCode.environmentVariables`
   to `[{"name":"CLAUDE_CONFIG_DIR","value":"C:\Users\richard\.claudeWork"}]` (or `.claudePersonal`). Use absolute paths; `~` is not expanded.
-- **Desktop:** keeps its own `--user-data-dir` shortcuts. Setting `CLAUDE_CONFIG_DIR` for Desktop (see `launchers/`) hid existing sessions and did not give per-profile skills, so the shortcuts are not wired to those launchers.
+- **Desktop:** both Desktop installs read the default `C:SERSICHARD.CLAUDE` (FORCING `CLAUDE_CONFIG_DIR` HID EXISTING SESSIONS), SO THEY SHARE ONE SKILL SET. RUN `SCRIPTS/LINK-SKILLS.PS1 -PROFILE DESKTOP` TO LINK `CORE` SKILLS ONLY INTO `.CLAUDESKILLS`. KEEP THE SHORTCUTS ON THEIR ORIGINAL `--USER-DATA-DIR` TARGETS; `LAUNCHERS/` IS UNUSED.
